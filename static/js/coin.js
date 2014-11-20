@@ -2,7 +2,7 @@ var output = "ran javascript coin";
 var balance = 0;
 var tx = [];
 var max_len = 5;
-var USD_conv;
+var USD_conv = 0;
 var address = "https://chain.so/api/v2/get_tx_received/BTC/14L55Bu9f4LsCS7ddK8FfftACYvGjyWWcC";
 
 var trans = {
@@ -18,42 +18,51 @@ var trans = {
     },
 };
 
+function get_conversion(){
+     //This needs to be averaged
+    $.get("https://chain.so/api/v2/get_price/BTC/USD",function(response){
+        console.log(response.data.prices[1].price);
+        USD_conv = response.data.prices[1].price;
+    });
+}
 
 
 
 $( document ).ready(function() { });
 
-function update_transaction_list(){
-     //get transaction list
+function get_data(){
+    $.get( address, function(response){update_transaction_list(response);});
+}
 
-     $.get( address,
-          function( response ) {
-	       console.log(response.status);
-               tx = response.data.txs;
-      });
+
+function update_transaction_list(response){
+     //get transaction list
+	 console.log(response.status);
+      tx = response.data.txs;
+
+
     
-    $.get("https://chain.so/api/v2/get_price/BTC/USD",function(response){
-          console.log(response.data.prices[1].price);
-        USD_conv = response.data.prices[1].price;
-});
      //push new transaction on list
      trans.add_elem(balance);
 
       //refresh window elements
       $("#list").empty();
-      console.log(tx.length)
-      for (var i = 0 ; i < 5 ; i++){
+      for (var i = tx.length-1 ; i>tx.length -6 && i >0 ; i--){
           var date = new Date(tx[i].time*1000);
           $("#list").append("<li id = \"mover\">" + USD_conv*tx[i].value + "  ,  " + 
             date.getHours() +":" + date.getMinutes() + "  " + date +"</li>");
       }
-$("#list li:nth-child(1)").css("width","600px")
-$("#list li:nth-child(1)").css("font-size","200%")
-$("#list li:nth-child(1)").css("height","100px")
-$("#list li:nth-child(5)").fadeOut("slow");
+    
+    
+
+      $("#list li:nth-child(1)").css("width","600px")
+      $("#list li:nth-child(1)").css("font-size","200%")
+      $("#list li:nth-child(1)").css("height","100px")
+       $("#list li:nth-child(5)").fadeOut("slow");
 }
 
-window.setInterval(update_transaction_list,5000);
+get_conversion();
+window.setInterval(get_data,5000);
 
 
 
