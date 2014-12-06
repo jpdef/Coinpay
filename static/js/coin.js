@@ -26,10 +26,6 @@ function get_conversion(){
     });
 }
 
-
-
-$( document ).ready(function() { });
-
 function get_data(){
     $.get( address, function(response){update_transaction_list(response);});
 }
@@ -38,19 +34,23 @@ function get_data(){
 function update_transaction_list(response){
      //get transaction list
 	 console.log(response.status);
-      tx = response.data.txs;
+
+      if(tx.length == 0){
 
 
+      }else if(tx[0].time==response.data.txs[0].time){
+        console.log("nothing new");
+        return;
+      }
     
-     //push new transaction on list
-     trans.add_elem(balance);
-
+      tx = response.data.txs;
       //refresh window elements
       $("#list").empty();
       for (var i = tx.length-1 ; i>tx.length -6 && i >0 ; i--){
           var date = new Date(tx[i].time*1000);
           $("#list").append("<li id = \"mover\">" + USD_conv*tx[i].value + "  ,  " + 
             date.getHours() +":" + date.getMinutes() + "  " + date +"</li>");
+
       }
     
     
@@ -60,13 +60,6 @@ function update_transaction_list(response){
       $("#list li:nth-child(1)").css("height","100px")
        $("#list li:nth-child(5)").fadeOut("slow");
 }
-
-get_conversion();
-window.setInterval(get_data,5000);
-
-
-
-
 
 
 
@@ -78,5 +71,6 @@ var qrcode = new QRCode("qrcode",   {text: address,
     correctLevel : QRCode.CorrectLevel.H});
 
 
-
+get_conversion();
+window.setInterval(get_data,5000);
 console.log(output);

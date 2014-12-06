@@ -6,7 +6,7 @@
 <title>Coin</title>
      <!-- CSS for presentation. -->
   <style>
-      html{ background-color:white; opacity:.6;}
+      html{ background-color:black;}
      h1 { height:50px ;
          font-size: 25px; text-shadow: 0 2px 1px rgba(0,0,0,.5); color: white; 
          background: transparent top center; background-color:#b0c4de;padding:10px;  }
@@ -14,7 +14,7 @@
       
       
       #mover {
-         border: 2px solid; text-align: center; width:500px; padding: 10px;
+         border: 2px solid; text-align: center; width:300px; padding: 10px;
          border-radius: 25px; 
          font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial,
                       "Lucida Grande", sans-serif; 
@@ -36,17 +36,18 @@
       
       #list{
           position:fixed;
-          top: 100px;
-          right: 600px;
-          width: 800px;
+          top: 50px;
+          width: 200px;
       }
       #qrcode {
-          position:fixed;
-          top:300px;
-          right:0px;
+          position:relative;
+          left : 470px;
+          top: 200px;
           width:500px;
           height:500px;
-          margin-top:15px;
+          border:solid;
+          border-color:white;
+          border-width: 10px;
       }
       
       
@@ -63,7 +64,8 @@
             <li class='last'><a href='#'><span>FAQ</span></a></li>
          </ul>
      </div>
-    
+<div id="qrcode"></div>
+
 <body>
 
    <ul id="list">
@@ -72,12 +74,43 @@
      </ul>
 </body>
     
+
+ 
+<script>
     
+function get_conv_rates(){
+    var average = 0.0;
+    $.get("https://chain.so/api/v2/get_price/BTC/USD",function(response){
+        console.log("from new method " + response.data.prices[1].price);
+     for(var i = 0;i<6;++i){
+         average += response.data.prices[i].price;
+     }
+     average /= 6;
+     jQuery.ajax({
+          method:'post',
+          url: '{{=URL('add_conv')}}',
+          data:{'conv':average},
+          success: function(data){console.log("return " + data);}
+         });
 
-<div id="qrcode"></div>
+     $.get( address, function(response){
+            //call update
 
+        jQuery.ajax({
+          method:'post',
+          url: '{{=URL('add_exchange')}}',
+          data:{'txs':repsonse.txs},
+          success: function(data){console.log("return " + data);}
+         });
 
-    
+     });
+
+});
+
+     
+}
+
+</script>
     
 <script src="{{=URL('static','js/qr/qrcode.js')}}" type="text/javascript"></script>    
 <script src="{{=URL('static','js/easyXDM/src/easyXDM.debug.js')}}"  type="text/javascript"></script>
