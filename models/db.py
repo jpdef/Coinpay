@@ -10,7 +10,7 @@ db.define_table('vendor',
 
 db.define_table('exchange',
     Field('value','double'),
-    Field('exchange_date','string'),
+    Field('time','integer'),
     Field('vendor_id','integer'))
 
 db.define_table('rates',

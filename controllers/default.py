@@ -1,4 +1,3 @@
-
 def index():
     """
     example action using the internationalization operator T and flash
@@ -30,15 +29,19 @@ def user():
 
 def add_exchange():
     vars = request.post_vars
-    #check for uniqueness
-    for(i = vars.txs.length-1; i >0;i-- ):
-        db.exchange.insert(value=vars.txs[i].value, 
-                           date=vars.txs[i].date,
-                           vender_id=auth.user_id);
-    return 'nothing'
+    values = [vars.value0,vars.value1,vars.value2,vars.value3,vars.value4]
+    times = [vars.time0,vars.time1,vars.time2,vars.time3,vars.time4]
+    for i in range(0, 4) :
+        db.exchange.update_or_insert(db.exchange.time == int(times[i]),
+                          value=values[i],
+                          time=times[i],
+                          vendor_id=7);
+    return "success"
 
 def add_conv():  
   vars = request.post_vars;
   db.rates.insert(value = vars.conv);
   return  vars.conv;
 
+def qr():
+    return dict(message="blah")
