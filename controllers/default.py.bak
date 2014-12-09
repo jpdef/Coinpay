@@ -1,3 +1,4 @@
+@auth.requires_login()
 def index():
     """
     example action using the internationalization operator T and flash
@@ -8,7 +9,6 @@ def index():
     """
     response.flash = T("Welcome to web2py!")
     return dict(message=T('Hello World'))
-
 
 def user():
     """
@@ -29,14 +29,19 @@ def user():
 
 def add_exchange():
     vars = request.post_vars
-    for i in reversed(range(0,vars.txs.length-1)) :
-        print i;
-        db.exchange.insert(value=vars.txs[i].value,
-                           date=vars.txs[i].date,
-                           vender_id=auth.user_id);
-    return 'nothing'
+    values = [vars.value0,vars.value1,vars.value2,vars.value3,vars.value4]
+    times = [vars.time0,vars.time1,vars.time2,vars.time3,vars.time4]
+    for i in range(0, 4) :
+        db.exchange.update_or_insert(db.exchange.time == int(times[i]),
+                          value=values[i],
+                          time=times[i],
+                          vendor_id=auth.user_id);
+    return "success"
 
 def add_conv():  
   vars = request.post_vars;
   db.rates.insert(value = vars.conv);
   return  vars.conv;
+
+def qr():
+    return dict(message="blah")

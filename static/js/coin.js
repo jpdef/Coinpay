@@ -10,7 +10,7 @@ function update_transaction_list(response,USD_conv){
       if(tx.length == 0){
 
 
-      }else if(tx[0].time==response.data.txs[0].time){
+      }else if(tx[0].value==response.data.txs[0].value){
         console.log("nothing new");
         return;
       }
@@ -28,18 +28,11 @@ function update_transaction_list(response,USD_conv){
     
     
 
-      $("#list ul:nth-child(1)").css("width","500px")
+      $("#list ul:nth-child(1)").css("width","450px")
       $("#list ul:nth-child(1)").css("font-size","200%")
       $("#list ul:nth-child(1)").css("height","100px")
       $("#list ul:nth-child(5)").fadeOut("slow");
       
-
-    var qrcode = new QRCode("qrcode",   {text: address,
-    width: 800,
-    height: 800,
-    colorDark : "#000000",
-    colorLight : "#ffffff",
-    correctLevel : QRCode.CorrectLevel.H});
 
 
 

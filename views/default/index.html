@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
 <link rel="stylesheet" href="{{=URL('static','css/cssmenu/styles.css')}}">
 <meta charset="utf-8" />
@@ -15,17 +16,17 @@
      
       .btn {
          width:300px;
-         background: #c4c9cc;
-         background-image: -webkit-linear-gradient(top, #c4c9cc, #363738);
-         background-image: -moz-linear-gradient(top, #c4c9cc, #363738);
-         background-image: -ms-linear-gradient(top, #c4c9cc, #363738);
-         background-image: -o-linear-gradient(top, #c4c9cc, #363738);
-         background-image: linear-gradient(to bottom, #c4c9cc, #363738);
-         -webkit-border-radius: 28;
-         -moz-border-radius: 28;
-         border-radius: 28px;
-         font-family: Arial;
-         color: #ffffff;
+         height:100px;
+         background: #2c3e50;
+         background-image: -webkit-linear-gradient(top, #7f8c8d, #7f8c8d);
+         background-image: -moz-linear-gradient(top, #7f8c8d, #7f8c8d);
+         background-image: -ms-linear-gradient(top, #7f8c8d, #7f8c8d);
+         background-image: -o-linear-gradient(top, #7f8c8d, #7f8c8d);
+         background-image: linear-gradient(to bottom, #7f8c8d, #7f8c8d);
+
+         font-family: 'Open Sans', sans-serif;
+         font-weight: bold;
+         color: #000000;
          font-size: 20px;
          padding: 10px 20px 10px 20px;
          text-decoration: none;
@@ -44,19 +45,34 @@
         #btn_form {
          position:fixed;
          top : 100px;
-         left : 600px;
+         left : 500px;
         }
       
       #mover {
-         border: 2px solid; text-align: center; width:300px; padding: 10px;
-         border-radius: 25px; 
+         border: 2px solid; text-align: center; width:300px; padding: 30px;
          font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial,
                       "Lucida Grande", sans-serif; 
          font-weight: 300;
-         color: white; box-shadow: 10px 10px 5px #888888; 
+         color: white; 
          list-style-type: none; }  
      
-      
+      #linelist{
+           position:fixed;
+           background: #000000;
+           border:solid;
+           border-color:white;
+           left : 550px;
+           top:250px;
+      } 
+
+      #linelist ul li{
+            display:inline;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            color:white;
+            margin:10px;
+            text-align: center;
+       }
       
       #sidebar {
       float:left;
@@ -70,8 +86,7 @@
       
       #list{
           position:relative;
-          top: 20px;
-          left:-40px;
+          left:-50px;
           width: 200px;
       }
       #calc{
@@ -116,13 +131,14 @@
        <li class='active'><a href="#"><span>Coinpay</span></a></li>
        <li><a href="{{=URL('settings')}}"><span>Settings</span></a></li>
        <li><a href='#'><span>Statistics</span></a></li>
-       <li class='last'><a href='#'><span>FAQ</span></a></li>
+       <li class='last'><a href='#'><span>Vendor ID #{{=vendor_id}}</span></a></li>
+       <li style="position:relative; top:10px; left:550px;"> <img src="{{=URL('static','images/coin_logo.png')}}" style="width:50px; height:50px;"></li>
     </ul>
 </div>
 
 
 <!-- PRICE INPUT-->
-<h2 id="price_header">Enter Price</h2>
+<h2 id="price_header"> Total Price:</h2>
 <div>
   <input id="price_input"></input> 
   <button id="btn_qr_hide" class="btn" type ="submit">Hide QR</button>
@@ -142,11 +158,25 @@
 
 
  <!-- BUTTONS--> 
- <div id="btn_form">
-      <button id="btn_trns" class="btn" type ="submit">Confirm Transaction</button>
-      <button id="btn_qr_show" class="btn" type ="submit">Grab QR</button>
-</div>
+ <ul id="btn_form">
+      <li  style="display:inline;"> <button id="btn_trns" class="btn" type ="submit"> VERIFY PAYMENT</button></li>
+      <li  style="display:inline;"> <button id="btn_qr_show" class="btn" type ="submit">GRAB QR</button></li>
+</ul>
 
+<div id="linelist">
+    <ul>
+     <li >Product Name</li>
+     <li >Quantity</li>
+     <li >Total</li>
+    </ul>
+<ul>
+<li><input  name= "newitem" id="newitem"  type="text" class="input-box" /></li>
+<li><input  name= "numitem" id="numitem" type="text" class="input-box"/></li>
+<li><output name= "itemprice" id="itemprice" type="text" class="text"/> 0.0 </output></li>
+<li><output name= "totalprice" id="totalprice" type="number"/> 0.0 </output></li>
+<li><button id="additem" >+</button> </li>
+</ul>
+</div>
  <!-- HIDDEN QR IMAGE--> 
 <div id="qrcode"></div>
 
@@ -162,18 +192,33 @@ $( document ).ready(function() {
   $("#qrcode").hide();
   $("#btn_qr_hide").hide();
 
-  $("#btn_trns").click(function(){
-      //if($("#price_input").empty()){
-      //  console.log("input empty")
-      //  return
-      //}
+   $("#btn_trns").click(function(){
       var required_value = parseFloat($("#price_input").val());
       if(Math.abs(required_value-curr_transaction) < .01){
         $("#list li:nth-child(1)").first().css("background-color","green");
       } else{
         $("#list li:nth-child(1)").first().css("background-color","red");
       }
-  });
+   } );
+
+    $("#additem").click(function() {
+        var newitem = $("#newitem").val();
+        var numitem = $("#numitem").val();
+        var totalprice = $("#totalprice").val();
+    
+        $("#linelist").append("<ul>" + "<li>" + newitem +"</li>"+
+                            "<li>" + numitem +"</li>"+
+                            "<li>"  + totalprice +"</li>" + "</ul>");
+        ordertotal = parseFloat(totalprice) + ordertotal;
+        $("#ordertotal").val(ordertotal);
+      
+
+        $("#newitem").val("");
+        $("#numitem").val("");
+        $("#itemprice").val(0.0);
+        $("#totalprice").val(0.0);
+    });
+
 
     $("#btn_qr_show").click(function(){ 
       $("#qrcode").show(); 
@@ -196,7 +241,7 @@ $( document ).ready(function() {
     });
 
     //fix so that address specificied to user
-    var qrcode = new QRCode("qrcode",   {text: address,
+    var qrcode = new QRCode("qrcode",   {text: "14L55Bu9f4LsCS7ddK8FfftACYvGjyWWcC",
        width: 800,
        height: 800,
        colorDark : "#000000",
