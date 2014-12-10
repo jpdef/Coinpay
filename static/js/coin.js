@@ -1,6 +1,6 @@
 var tx = [];
 var max_len = 5;
-var address = "https://chain.so/api/v2/get_tx_received/BTC/14L55Bu9f4LsCS7ddK8FfftACYvGjyWWcC";
+var api_address = "https://chain.so/api/v2/get_tx_received/BTC/";
 var curr_transaction = 0.0
 
 function update_transaction_list(response,USD_conv){

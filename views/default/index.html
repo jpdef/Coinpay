@@ -4,7 +4,7 @@
 <head>
 <link rel="stylesheet" href="{{=URL('static','css/cssmenu/styles.css')}}">
 <meta charset="utf-8" />
-<title>Coin</title>
+<title>Coinpay</title>
   <!-- CSS for presentation. -->
   <style>
       html{ background-color:black;}
@@ -106,14 +106,14 @@
         color:white;
         font-family: sans-serif;
         font-size: 80px;
-        width: 500px;
+        width: 600px;
         height: 50px;
       }
 
       #qrcode {
           position:fixed;
-          width:800px;
-          height:800px;
+          width:500px;
+          height:500px;
           border:solid;
           border-color:white;
           border-width: 10px;
@@ -124,7 +124,6 @@
 
 
 </head>
-
  <!-- HEADER --> 
 <div id="cssmenu">
     <ul>
@@ -184,11 +183,10 @@
 <!-- SCRIPTS -->
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="{{=URL('static','js/qr/qrcode.js')}}" type="text/javascript"></script>    
-<script src="{{=URL('static','js/coin.js')}}" type="text/javascript"></script>
+
 
 <script>
 $( document ).ready(function() {
-
   $("#qrcode").hide();
   $("#btn_qr_hide").hide();
 
@@ -221,17 +219,33 @@ $( document ).ready(function() {
 
 
     $("#btn_qr_show").click(function(){ 
-      $("#qrcode").show(); 
-      $("#btn_qr_hide").show();
-      $("#list").hide();
-      $("#btn_form").hide();
-      $("#cssmenu").hide();
-      $("#price_header").hide();
-
+       jQuery.ajax({
+         method:'post',
+         url: '{{=URL('get_address')}}',
+         success: function(data){
+          var address= data;
+          var amount = $("#price_input").val()
+          var qr_str = "bitcoin:"+address + "?amount=" +amount;
+          var qrcode = new QRCode("qrcode",  
+                {text: qr_str,
+                width: 500,
+                height: 500,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H});
+          $("#qrcode").show(); 
+          $("#btn_qr_hide").show();
+          $("#list").hide();
+          $("#btn_form").hide();
+          $("#cssmenu").hide();
+          $("#price_header").hide();
+        }
+      });
     });
 
-    $("#btn_qr_hide").click(function(){ 
-      $("#qrcode").hide(); 
+    $("#btn_qr_hide").click(function(){
+      $("#qrcode").hide();
+      $("#qrcode").empty(); 
       $("#btn_qr_hide").hide();
       $("#list").show();
       $("#btn_form").show();
@@ -240,13 +254,7 @@ $( document ).ready(function() {
 
     });
 
-    //fix so that address specificied to user
-    var qrcode = new QRCode("qrcode",   {text: "14L55Bu9f4LsCS7ddK8FfftACYvGjyWWcC",
-       width: 800,
-       height: 800,
-       colorDark : "#000000",
-       colorLight : "#ffffff",
-       correctLevel : QRCode.CorrectLevel.H});
+  
 
 
 });
@@ -257,48 +265,50 @@ $( document ).ready(function() {
 window.setInterval(get_data,5000);
 
 function get_data(){    
-    //get conversion rate
-    $.get("https://chain.so/api/v2/get_price/BTC/USD",function(response){
-       var average_conv = 0.0;
-       console.log("from new method " + response.data.prices[1].price);
-       for(var i = 0;i<6; ++i){
-          average_conv += parseFloat(response.data.prices[1].price);
-     }
-     average_conv = average_conv/6.0;
-     
-     jQuery.ajax({
-          method:'post',
-          url: '{{=URL('add_conv')}}',
-          data:{'conv':average_conv},
-          success: function(data){console.log("add_conv:return= " + data);}
-         });
-     console.log(average_conv);
-
-
-     
-     //get 5 transactions and update page
-     $.get( address, function(response){
-      update_transaction_list(response,average_conv);
-      var len = response.data.txs.length;
-        jQuery.ajax({
-          method:'post',
-          url: '{{=URL('add_exchange')}}',
-          data:{'value0': response.data.txs[len-5].value,'time0': response.data.txs[len-5].time,
-                'value1': response.data.txs[len-4].value,'time1': response.data.txs[len-4].time,
-                'value2': response.data.txs[len-3].value,'time2': response.data.txs[len-3].time,
-                'value3': response.data.txs[len-2].value,'time3': response.data.txs[len-2].time,
-                'value4': response.data.txs[len-1].value,'time4': response.data.txs[len-1].time
-              },
-          success: function(data){console.log("add_exchange:return=" + data);}
-         });
-
-     });
-
-    });
-
+   jQuery.ajax({
+     method:'post',
+     url: '{{=URL('get_address')}}',
+     success: function(data){
+      var address=data;
+      //get conversion rate
+      $.get("https://bitpay.com/api/rates",function(response){
+         var average_conv = response[0].rate;
+         console.log("from new method " + response[0].rate);
+  
+         jQuery.ajax({
+              method:'post',
+              url: '{{=URL('add_conv')}}',
+              data:{'conv':average_conv},
+              success: function(data){
+                console.log("add_conv:return= " + data);
+              }
+          });
+          console.log(average_conv);
+          console.log("from getdata"+address);
+         
+          //get 5 transactions and update page
+          $.get( (api_address+address), function(response){
+           update_transaction_list(response,average_conv);
+           var len = response.data.txs.length;
+             jQuery.ajax({
+               method:'post',
+               url: '{{=URL('add_exchange')}}',
+               data:{'value0': response.data.txs[len-5].value,'time0':        response.  data.txs[len-5].time,
+                     'value1': response.data.txs[len-4].value,'time1':        response.  data.txs[len-4].time,
+                     'value2': response.data.txs[len-3].value,'time2':        response.  data.txs[len-3].time,
+                     'value3': response.data.txs[len-2].value,'time3':        response.  data.txs[len-2].time,
+                     'value4': response.data.txs[len-1].value,'time4':        response.  data.txs[len-1].time
+                   },
+               success: function(data){console.log("add_exchange:return=" +        data  );}
+                  });
+         
+              });
+      });
+  }});
      
 }
 
 
 </script>
+<script src="{{=URL('static','js/coin.js')}}" type="text/javascript"></script>
 </html>

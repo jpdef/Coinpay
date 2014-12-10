@@ -2,6 +2,7 @@ from gluon.tools import Auth
 
 db =DAL("sqlite://storage.sqlite",adapter_args=dict(foreign_keys=False))
 auth = Auth(db)
+auth.settings.extra_fields['auth_user'] = [Field('recv_addr')]
 auth.define_tables(username=True)
 
 db.define_table('vendor',
