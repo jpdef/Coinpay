@@ -10,6 +10,9 @@ def index():
     response.flash = T("Welcome to web2py!")
     return dict(vendor_id=auth.user_id,recv_addr=auth.user.recv_addr)
 
+def settings():
+    return dict()
+
 def user():
     """
     exposes:
