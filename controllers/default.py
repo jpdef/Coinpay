@@ -1,33 +1,21 @@
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
+from cStringIO import StringIO
+
+
 @auth.requires_login()
 def index():
-    """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
-
-    if you need a simple wiki simply replace the two lines below with:
-    return auth.wiki()
-    """
-    response.flash = T("Welcome to web2py!")
     return dict(vendor_id=auth.user_id,recv_addr=auth.user.recv_addr)
 
+<<<<<<< HEAD
+def statistics():
+    return dict(mess="hello")
+=======
 def settings():
     return dict()
+>>>>>>> 5f820f7b885c8b5b8926598888b31d6545b850ea
 
 def user():
-    """
-    exposes:
-    http://..../[app]/default/user/login
-    http://..../[app]/default/user/logout
-    http://..../[app]/default/user/register
-    http://..../[app]/default/user/profile
-    http://..../[app]/default/user/retrieve_password
-    http://..../[app]/default/user/change_password
-    http://..../[app]/default/user/manage_users (requires membership in
-    use @auth.requires_login()
-        @auth.requires_membership('group name')
-        @auth.requires_permission('read','table name',record_id)
-    to decorate functions that need access control
-    """
     return dict(form=auth())
 
 def get_address():
@@ -51,3 +39,51 @@ def add_conv():
 
 def qr():
     return dict(message="blah")
+
+def exchange_stats():
+    response.headers['Content-Type']='image/png'
+    title='Exchanges'
+    xlab='Time'
+    ylab='Value'
+    data_t = []
+    data_v = []
+    exchanges = db(db.exchange).select()
+    for exchange in exchanges:
+        data_t.append(exchange.time);
+        data_v.append(exchange.value);
+    fig=Figure()
+    fig.set_facecolor('white')
+    ax=fig.add_subplot(111)
+    if title: ax.set_title(title)
+    if xlab: ax.set_xlabel(xlab)
+    if ylab: ax.set_ylabel(ylab)
+    image=ax.plot(data_t,data_v)
+    #image.set_interpolation('bilinear')
+    canvas=FigureCanvas(fig)
+    stream=StringIO()
+    canvas.print_png(stream)
+    return stream.getvalue()
+
+def rate_stats():
+    response.headers['Content-Type']='image/png'
+    title='USD Bitcoin Conversion'
+    xlab='Time'
+    ylab='Price'
+    data = []
+    rates = db(db.rates).select()
+    for rate in rates:
+        data.append(rate.value);
+    fig=Figure()
+    fig.set_facecolor('white')
+    ax=fig.add_subplot(111)
+    if title: ax.set_title(title)
+    if xlab: ax.set_xlabel(xlab)
+    if ylab: ax.set_ylabel(ylab)
+    image=ax.plot(data)
+    #image.set_interpolation('bilinear')
+    canvas=FigureCanvas(fig)
+    stream=StringIO()
+    canvas.print_png(stream)
+    return stream.getvalue()
+
+
