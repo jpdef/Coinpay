@@ -18,14 +18,16 @@
 <h1>Settings</h1>
 
 <div>
-  <h2 id="merchant_addr" > Current Vendor Address: {{=recv_addr}}</h2>
-  <input id="recv_addr_input"></input>
+  <h2 id="merchant_addr" > Current Vendor Address:
+  <input  id="recv_addr_input" value="{{=recv_addr}} "> </input></h2>
+  <div>must logout to complete change</div>
 </div>
 
 <div>
   <br><br>
   <button id="update_settings" class="btn" type ="submit">Update Settings</button>
-  <button id="cancel_settings" class="btn" type ="submit">Cancel</button>
+  <form  style="display:inline" action="{{=URL('default', 'user', args='logout')}}">
+  	<input type='submit' value="Logout"></form>
 </div>
 
 
@@ -35,7 +37,6 @@ $( document ).ready(function() {
 
 $("#update_settings").click(function(){
 	var new_addr = $("#recv_addr_input").val();
-	console.log(new_addr);
 	jQuery.ajax({
              method:'post',
              url: '{{=URL('set_address')}}',

@@ -26,6 +26,7 @@
 
 <!-- PRICE INPUT-->
 <h1 id="price_header"> Total Price:</h1>
+
 <div>
   <input id="price_input"></input> 
   <button id="btn_qr_hide" class="btn" type ="submit">Hide QR</button>
@@ -34,7 +35,7 @@
 <div class="container">
     <ul id="list">
 
-     </ul>
+    </ul>
 </div>
 
 
@@ -204,13 +205,6 @@ function store_txs(response,address,average_conv){
 
 function get_price(choosen){
      ajax('{{=URL('get_price')}}+"?choosen=' + choosen,[],'itemprice');
-    /* jQuery.ajax({
-      method:'post',
-      url:'{{=URL('get_price')}}',
-      data:{'choosen':choosen},
-      success:function(data){$("#itemprice").val(data);}
-      });
-*/
 }
 
 </script>

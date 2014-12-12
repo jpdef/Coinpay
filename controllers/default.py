@@ -21,8 +21,9 @@ def get_address():
 
 def set_address():
     vars = request.post_vars
-    db(db.auth_user.id == 2).update(recv_addr="boo")
-    return auth.recv_addr
+    print(vars.addr)
+    db(db.auth_user.id==auth.user.id).update(recv_addr=vars.addr)
+    return auth.user.recv_addr
 
 def add_exchange():
     vars = request.post_vars
