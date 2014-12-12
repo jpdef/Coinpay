@@ -1,10 +1,50 @@
+<link rel="stylesheet" href="{{=URL('static','css/cssmenu/styles.css')}}">
+<link rel="stylesheet" href="{{=URL('static','css/coin.css')}}">
+<link rel="stylesheet" href="{{=URL('static','css/bootstrap-responsive.min.css')}}">
+
+
+<div id="cssmenu">
+    <ul>
+       <li class='active'><a href="{{=URL('index')}}"><span>Coinpay</span></a></li>
+       <li><a href="#"><span>Settings</span></a></li>
+       <li><a href="{{=URL('statistics')}}"><span>Statistics</span></a></li>
+       <li class='last'><a href='#'><span>Vendor ID #{{=vendor_id}}</span></a></li>
+       <li style="position:relative; top:10px; left:550px;"> 
+       <img src="{{=URL('static','images/coin_logo.png')}}" 
+       style="width:50px; height:50px; position:fixed; right:50px; top:5px;"></li>
+    </ul>
+</div>
+
 <h1>Settings</h1>
+
 <div>
-  <h2 id="merchant_addr"> Merchant Address:</h2>
+  <h2 id="merchant_addr" > Current Vendor Address: {{=recv_addr}}</h2>
   <input id="recv_addr_input"></input>
 </div>
+
 <div>
   <br><br>
   <button id="update_settings" class="btn" type ="submit">Update Settings</button>
   <button id="cancel_settings" class="btn" type ="submit">Cancel</button>
 </div>
+
+
+{{include 'web2py_ajax.html'}}
+<script>
+$( document ).ready(function() {
+
+$("#update_settings").click(function(){
+	var new_addr = $("#recv_addr_input").val();
+	console.log(new_addr);
+	jQuery.ajax({
+             method:'post',
+             url: '{{=URL('set_address')}}',
+             data:{'addr': new_addr},
+            success: function(data){
+              console.log("addr is now " + data );
+            }
+           });
+});
+
+});
+</script>

@@ -7,12 +7,16 @@ auth.define_tables(username=True)
 
 db.define_table('vendor',
      Field('recv_addr','string'),
-     Field('name', 'string'));
+     Field('name', 'string'))
 
 db.define_table('exchange',
     Field('value','double'),
     Field('time','integer'),
     Field('vendor_id','integer'))
+
+db.define_table('products',
+    Field('name','string'),
+    Field('value','double'))
 
 db.define_table('rates',
     Field('value','double'))

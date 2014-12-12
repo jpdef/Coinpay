@@ -5,21 +5,24 @@ from cStringIO import StringIO
 
 @auth.requires_login()
 def index():
-    return dict(vendor_id=auth.user_id,recv_addr=auth.user.recv_addr)
+    return dict(vendor_id=auth.user_id,recv_addr=auth.user.recv_addr,products=db(db.products).select())
 
-<<<<<<< HEAD
 def statistics():
     return dict(mess="hello")
-=======
+
 def settings():
-    return dict()
->>>>>>> 5f820f7b885c8b5b8926598888b31d6545b850ea
+    return dict(vendor_id=auth.user_id,recv_addr=auth.user.recv_addr)
 
 def user():
     return dict(form=auth())
 
 def get_address():
     return auth.user.recv_addr;
+
+def set_address():
+    vars = request.post_vars
+    db(db.auth_user.id == 2).update(recv_addr="boo")
+    return auth.recv_addr
 
 def add_exchange():
     vars = request.post_vars
@@ -37,8 +40,10 @@ def add_conv():
   db.rates.insert(value = vars.conv);
   return  vars.conv;
 
-def qr():
-    return dict(message="blah")
+def get_price():
+    rows = db(db.products).select()
+    for row in rows.find(lambda row: row.name == request.vars.choosen):
+        return row.value
 
 def exchange_stats():
     response.headers['Content-Type']='image/png'

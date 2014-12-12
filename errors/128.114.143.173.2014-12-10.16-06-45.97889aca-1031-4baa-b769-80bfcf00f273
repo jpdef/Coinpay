@@ -1,0 +1,21 @@
+(dp1
+S'output'
+p2
+S"<type 'exceptions.NameError'> global name 'dd4' is not defined"
+p3
+sS'layer'
+p4
+S'/home/jake/Courses/183/web2py/applications/Coinpay/controllers/default.py'
+p5
+sS'code'
+p6
+S'from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas\nfrom matplotlib.figure import Figure\nfrom cStringIO import StringIO\n\n\n@auth.requires_login()\ndef index():\n    return dict(vendor_id=auth.user_id,recv_addr=auth.user.recv_addr)\n\ndef statistics():\n    response.headers[\'Content-Type\']=\'image/png\'\n    title=\'USD Bitcoin\'\n    xlab=\'Price\'\n    ylab=\'Time\'\n    z=[[1,2,3,dd4],[2,3,4,5],[3,4,5,6],[4,5,6,7]]\n    data=[]\n    rows = db(db.rates).select();\n    for row in rows:\n        data.append(row.value);\n    fig=Figure()\n    fig.set_facecolor(\'white\')\n    ax=fig.add_subplot(111)\n    if title: ax.set_title(title)\n    if xlab: ax.set_xlabel(xlab)\n    if ylab: ax.set_ylabel(ylab)\n    image=ax.imshow(z)\n    image.set_interpolation(\'bilinear\')\n    canvas=FigureCanvas(fig)\n    stream=StringIO()\n    canvas.print_png(stream)\n    return stream.getvalue()\n\ndef user():\n    return dict(form=auth())\n\ndef get_address():\n    return auth.user.recv_addr;\n\ndef add_exchange():\n    vars = request.post_vars\n    values = [vars.value0,vars.value1,vars.value2,vars.value3,vars.value4]\n    times = [vars.time0,vars.time1,vars.time2,vars.time3,vars.time4]\n    for i in range(0, 4) :\n        db.exchange.update_or_insert(db.exchange.time == int(times[i]),\n                          value=values[i],\n                          time=times[i],\n                          vendor_id=auth.user_id);\n    return "success"\n\ndef add_conv():  \n  vars = request.post_vars;\n  db.rates.insert(value = vars.conv);\n  return  vars.conv;\n\ndef qr():\n    return dict(message="blah")\n\n\n\nresponse._vars=response._caller(statistics)\n'
+p7
+sS'snapshot'
+p8
+(dp9
+sS'traceback'
+p10
+S'Traceback (most recent call last):\n  File "/home/jake/Courses/183/web2py/gluon/restricted.py", line 224, in restricted\n    exec ccode in environment\n  File "/home/jake/Courses/183/web2py/applications/Coinpay/controllers/default.py", line 60, in <module>\n  File "/home/jake/Courses/183/web2py/gluon/globals.py", line 392, in <lambda>\n    self._caller = lambda f: f()\n  File "/home/jake/Courses/183/web2py/applications/Coinpay/controllers/default.py", line 15, in statistics\n    z=[[1,2,3,dd4],[2,3,4,5],[3,4,5,6],[4,5,6,7]]\nNameError: global name \'dd4\' is not defined\n'
+p11
+s.

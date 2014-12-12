@@ -3,157 +3,40 @@
 
 <head>
 <link rel="stylesheet" href="{{=URL('static','css/cssmenu/styles.css')}}">
+<link rel="stylesheet" href="{{=URL('static','css/coin.css')}}">
+<link rel="stylesheet" href="{{=URL('static','css/bootstrap-responsive.min.css')}}">
+
 <meta charset="utf-8" />
 <title>Coinpay</title>
-  <!-- CSS for presentation. -->
-  <style>
-      html{ background-color:black;}
-     h1 {
-      height:50px ;
-      font-size: 25px; text-shadow: 0 2px 1px rgba(0,0,0,.5); color: white; 
-        background: transparent top center; background-color:#b0c4de;padding:10px;  
-      }
-     
-      .btn {
-         width:300px;
-         height:100px;
-         background: #2c3e50;
-         background-image: -webkit-linear-gradient(top, #7f8c8d, #7f8c8d);
-         background-image: -moz-linear-gradient(top, #7f8c8d, #7f8c8d);
-         background-image: -ms-linear-gradient(top, #7f8c8d, #7f8c8d);
-         background-image: -o-linear-gradient(top, #7f8c8d, #7f8c8d);
-         background-image: linear-gradient(to bottom, #7f8c8d, #7f8c8d);
-
-         font-family: 'Open Sans', sans-serif;
-         font-weight: bold;
-         color: #000000;
-         font-size: 20px;
-         padding: 10px 20px 10px 20px;
-         text-decoration: none;
-         }
-
-        .btn:hover {
-          background: #b3b7ba;
-          background-image: -webkit-linear-gradient(top, #b3b7ba, #3e4042);
-          background-image: -moz-linear-gradient(top, #b3b7ba, #3e4042);
-          background-image: -ms-linear-gradient(top, #b3b7ba, #3e4042);
-          background-image: -o-linear-gradient(top, #b3b7ba, #3e4042);
-          background-image: linear-gradient(to bottom, #b3b7ba, #3e4042);
-          text-decoration: none;
-        }
-
-        #btn_form {
-         position:fixed;
-         top : 100px;
-         left : 500px;
-        }
-      
-      #mover {
-         border: 2px solid; text-align: center; width:300px; padding: 30px;
-         font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial,
-                      "Lucida Grande", sans-serif; 
-         font-weight: 300;
-         color: white; 
-         list-style-type: none; }  
-     
-      #linelist{
-           position:fixed;
-           background: #000000;
-           border:solid;
-           border-color:white;
-           left : 550px;
-           top:250px;
-      } 
-
-      #linelist ul li{
-            display:inline;
-            font-family: 'Open Sans', sans-serif;
-            font-weight: bold;
-            color:white;
-            margin:10px;
-            text-align: center;
-       }
-      
-      #sidebar {
-      float:left;
-      width:250px;
-      border: 1px solid white;
-        background: -webkit-linear-gradient(left, white , grey); /* For Safari 5.1 to 6.0 */
-        background: -o-linear-gradient(right, white, grey); /* For Opera 11.1 to 12.0 */
-        background: -moz-linear-gradient(right,white, grey); /* For Firefox 3.6 to 15 */
-        background: linear-gradient(to right, white , grey); /* Standard syntax (must be last) */
-      }
-      
-      #list{
-          position:relative;
-          left:-50px;
-          width: 200px;
-      }
-      #calc{
-        position:relative;
-        left :600px;
-      }
-
-      #price_input{
-        position:relative;
-        font-family: sans-serif;
-        font-size: 80px;
-        width: 500px;
-        height: 100px;
-      }
-
-      #price_header{
-        color:white;
-        font-family: sans-serif;
-        font-size: 80px;
-        width: 600px;
-        height: 50px;
-      }
-
-      #qrcode {
-          position:fixed;
-          width:500px;
-          height:500px;
-          border:solid;
-          border-color:white;
-          border-width: 10px;
-      }
-      
-      
-</style>
-
 
 </head>
  <!-- HEADER --> 
 <div id="cssmenu">
     <ul>
-       <li class='active'><a href="#"><span>Coinpay</span></a></li>
+       <li class='active'><a href="{{=URL('index')}}"><span>Coinpay</span></a></li>
        <li><a href="{{=URL('settings')}}"><span>Settings</span></a></li>
-       <li><a href='#'><span>Statistics</span></a></li>
+       <li><a href="{{=URL('statistics')}}"><span>Statistics</span></a></li>
        <li class='last'><a href='#'><span>Vendor ID #{{=vendor_id}}</span></a></li>
-       <li style="position:relative; top:10px; left:550px;"> <img src="{{=URL('static','images/coin_logo.png')}}" style="width:50px; height:50px;"></li>
+       <li style="position:relative; top:10px; left:550px;"> 
+       <img src="{{=URL('static','images/coin_logo.png')}}" 
+       style="width:50px; height:50px; position:fixed; right:50px; top:5px;"></li>
     </ul>
 </div>
 
 
 <!-- PRICE INPUT-->
-<h2 id="price_header"> Total Price:</h2>
+<h1 id="price_header"> Total Price:</h1>
 <div>
   <input id="price_input"></input> 
   <button id="btn_qr_hide" class="btn" type ="submit">Hide QR</button>
 </div>
 
-<body>
-   <ul id="list">
+<div class="container">
+    <ul id="list">
 
      </ul>
-</body>
+</div>
 
-
- <!-- CALCULATOR maybe?
-<div id="calc">
-  <iframe width="218" height="302" src="http://www.calculator-1.com/outdoor/?f=666666&r=666666" scrolling="no" frameborder="0"></iframe><br /> 
-</div>--> 
 
 
  <!-- BUTTONS--> 
@@ -162,29 +45,43 @@
       <li  style="display:inline;"> <button id="btn_qr_show" class="btn" type ="submit">GRAB QR</button></li>
 </ul>
 
-<div id="linelist">
+<div id="linelist" class="container">
     <ul>
-     <li >Product Name</li>
-     <li >Quantity</li>
-     <li >Total</li>
+     <li class="lineitem">Product Name</li>
+     <li class="lineitem">Quantity</li>
+     <li class="lineitem">Total</li>
     </ul>
 <ul>
-<li><input  name= "newitem" id="newitem"  type="text" class="input-box" /></li>
-<li><input  name= "numitem" id="numitem" type="text" class="input-box"/></li>
-<li><output name= "itemprice" id="itemprice" type="text" class="text"/> 0.0 </output></li>
-<li><output name= "totalprice" id="totalprice" type="number"/> 0.0 </output></li>
-<li><button id="additem" >+</button> </li>
+
+<li class="lineitem"><input  name= "newitem" id="newitem"  type="text" class="input-box" /></li>
+<li class="lineitem"><input  name= "numitem" id="numitem" type="text" class="input-box"/></li>
+<li class="lineitem"><output name= "itemprice" id="itemprice" type="text" class="text"/> 0.0 </output></li>
+<li class="lineitem"><output name= "totalprice" id="totalprice" type="number"/> 0.0 </output></li>
+<li class="lineitem"><button id="additem" >+</button> </li>
 </ul>
+
+<ul id="productlist" >
+     {{for product in products:}}
+     <li id="product">{{=product.name}} </li> 
+     {{pass}}
+</ul>
+
 </div>
+
+
+
+
  <!-- HIDDEN QR IMAGE--> 
 <div id="qrcode"></div>
+{{include 'web2py_ajax.html'}}
 
-
-<!-- SCRIPTS -->
+<!-- SCRIPTS 
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+-->
 <script src="{{=URL('static','js/qr/qrcode.js')}}" type="text/javascript"></script>    
+<script src="{{=URL('static','js/point_of_sale.js')}}" type="text/javascript"></script>    
 
-
+<!--JQuery Stuff-->
 <script>
 $( document ).ready(function() {
   $("#qrcode").hide();
@@ -199,23 +96,6 @@ $( document ).ready(function() {
       }
    } );
 
-    $("#additem").click(function() {
-        var newitem = $("#newitem").val();
-        var numitem = $("#numitem").val();
-        var totalprice = $("#totalprice").val();
-    
-        $("#linelist").append("<ul>" + "<li>" + newitem +"</li>"+
-                            "<li>" + numitem +"</li>"+
-                            "<li>"  + totalprice +"</li>" + "</ul>");
-        ordertotal = parseFloat(totalprice) + ordertotal;
-        $("#ordertotal").val(ordertotal);
-      
-
-        $("#newitem").val("");
-        $("#numitem").val("");
-        $("#itemprice").val(0.0);
-        $("#totalprice").val(0.0);
-    });
 
 
     $("#btn_qr_show").click(function(){ 
@@ -223,22 +103,26 @@ $( document ).ready(function() {
          method:'post',
          url: '{{=URL('get_address')}}',
          success: function(data){
-          var address= data;
-          var amount = $("#price_input").val()
-          var qr_str = "bitcoin:"+address + "?amount=" +amount;
-          var qrcode = new QRCode("qrcode",  
-                {text: qr_str,
-                width: 500,
-                height: 500,
-                colorDark : "#000000",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.H});
-          $("#qrcode").show(); 
-          $("#btn_qr_hide").show();
-          $("#list").hide();
-          $("#btn_form").hide();
-          $("#cssmenu").hide();
-          $("#price_header").hide();
+           $.get("https://bitpay.com/api/rates",function(response){
+                var address= data;
+                var amount = parseFloat($("#price_input").val())/ parseFloat(response[0].rate);
+                var str_amount = amount.toFixed(6);
+                var qr_str = "bitcoin:"+address + "?amount=" +str_amount;
+                console.log(qr_str);
+                var qrcode = new QRCode("qrcode",  
+                      {text: qr_str,
+                      width: 500,
+                      height: 500,
+                      colorDark : "#000000",
+                      colorLight : "#ffffff",
+                      correctLevel : QRCode.CorrectLevel.H});
+                $("#qrcode").show(); 
+                $("#btn_qr_hide").show();
+                $("#list").hide();
+                $("#btn_form").hide();
+                $("#cssmenu").hide();
+                $("#price_header").hide();
+          });
         }
       });
     });
@@ -260,7 +144,6 @@ $( document ).ready(function() {
 });
 </script>
 
-
 <script>
 window.setInterval(get_data,5000);
 
@@ -272,9 +155,7 @@ function get_data(){
       var address=data;
       //get conversion rate
       $.get("https://bitpay.com/api/rates",function(response){
-         var average_conv = response[0].rate;
-         console.log("from new method " + response[0].rate);
-  
+         var average_conv = response[0].rate;  
          jQuery.ajax({
               method:'post',
               url: '{{=URL('add_conv')}}',
@@ -283,31 +164,54 @@ function get_data(){
                 console.log("add_conv:return= " + data);
               }
           });
-          console.log(average_conv);
-          console.log("from getdata"+address);
+          console.log("getdata:"+average_conv);
+          console.log("getdata:"+address);
          
           //get 5 transactions and update page
-          $.get( (api_address+address), function(response){
-           update_transaction_list(response,average_conv);
-           var len = response.data.txs.length;
-             jQuery.ajax({
-               method:'post',
-               url: '{{=URL('add_exchange')}}',
-               data:{'value0': response.data.txs[len-5].value,'time0':        response.  data.txs[len-5].time,
-                     'value1': response.data.txs[len-4].value,'time1':        response.  data.txs[len-4].time,
-                     'value2': response.data.txs[len-3].value,'time2':        response.  data.txs[len-3].time,
-                     'value3': response.data.txs[len-2].value,'time3':        response.  data.txs[len-2].time,
-                     'value4': response.data.txs[len-1].value,'time4':        response.  data.txs[len-1].time
-                   },
-               success: function(data){console.log("add_exchange:return=" +        data  );}
-                  });
-         
-              });
+          store_txs(response,address,average_conv);
+ 
       });
   }});
      
 }
 
+function store_txs(response,address,average_conv){
+    $.get( (api_address+address), function(response){
+       var new_data = update_transaction_list(response,average_conv,new_data);
+       var len = response.data.txs.length;
+       if(new_data){
+           console.log("storing transactions");
+           jQuery.ajax({
+             method:'post',
+             url: '{{=URL('add_exchange')}}',
+             data:{'value0': response.data.txs[len-5].value*average_conv,
+                  'time0':response.data.txs[len-5].time,
+                   'value1': response.data.txs[len-4].value*average_conv,
+                   'time1':response.data.txs[len-4].time,
+                   'value2': response.data.txs[len-3].value*average_conv,
+                   'time2':response.data.txs[len-3].time,
+                   'value3': response.data.txs[len-2].value*average_conv,
+                   'time3':response.data.txs[len-2].time,
+                   'value4': response.data.txs[len-1].value*average_conv,
+                   'time4':response.data.txs[len-1].time},
+            success: function(data){
+              console.log("add_exchange:return=" +        data  );
+            }
+           });
+         }     
+    });
+}
+
+function get_price(choosen){
+     ajax('{{=URL('get_price')}}+"?choosen=' + choosen,[],'itemprice');
+    /* jQuery.ajax({
+      method:'post',
+      url:'{{=URL('get_price')}}',
+      data:{'choosen':choosen},
+      success:function(data){$("#itemprice").val(data);}
+      });
+*/
+}
 
 </script>
 <script src="{{=URL('static','js/coin.js')}}" type="text/javascript"></script>
