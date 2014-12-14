@@ -1,7 +1,4 @@
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
-from cStringIO import StringIO
-
+import datetime
 
 @auth.requires_login()
 def index():
@@ -38,7 +35,7 @@ def add_exchange():
 
 def add_conv():  
   vars = request.post_vars;
-  db.rates.insert(value = vars.conv);
+  db.rates.insert(value = vars.conv,time=datetime.datetime.now);
   return  vars.conv;
 
 def get_price():
@@ -47,6 +44,9 @@ def get_price():
         return row.value
 
 def exchange_stats():
+    from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+    from matplotlib.figure import Figure
+    from cStringIO import StringIO
     response.headers['Content-Type']='image/png'
     title='Exchanges'
     xlab='Time'
@@ -55,7 +55,7 @@ def exchange_stats():
     data_v = []
     exchanges = db(db.exchange).select()
     for exchange in exchanges:
-        data_t.append(exchange.time);
+        data_t.append(datetime.datetime.fromtimestamp(exchange.time));
         data_v.append(exchange.value);
     fig=Figure()
     fig.set_facecolor('white')
@@ -63,7 +63,7 @@ def exchange_stats():
     if title: ax.set_title(title)
     if xlab: ax.set_xlabel(xlab)
     if ylab: ax.set_ylabel(ylab)
-    image=ax.plot(data_t,data_v)
+    image=ax.plot_date(data_t,data_v)
     #image.set_interpolation('bilinear')
     canvas=FigureCanvas(fig)
     stream=StringIO()
@@ -71,21 +71,26 @@ def exchange_stats():
     return stream.getvalue()
 
 def rate_stats():
+    from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+    from matplotlib.figure import Figure
+    from cStringIO import StringIO
     response.headers['Content-Type']='image/png'
     title='USD Bitcoin Conversion'
     xlab='Time'
     ylab='Price'
-    data = []
+    data_t = []
+    data_r = []
     rates = db(db.rates).select()
     for rate in rates:
-        data.append(rate.value);
+        data_t.append(rate.time);
+        data_r.append(rate.value);
     fig=Figure()
     fig.set_facecolor('white')
     ax=fig.add_subplot(111)
     if title: ax.set_title(title)
     if xlab: ax.set_xlabel(xlab)
     if ylab: ax.set_ylabel(ylab)
-    image=ax.plot(data)
+    image=ax.plot_date(data_t,data_r)
     #image.set_interpolation('bilinear')
     canvas=FigureCanvas(fig)
     stream=StringIO()

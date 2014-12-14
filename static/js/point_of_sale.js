@@ -7,10 +7,10 @@ $(document).ready(function() {
     var numitem = $("#numitem").val();
     var totalprice = $("#totalprice").val();
 
-    $("#linelist").append("<ul>" + 
-                        "<li class=\"lineitem\">" + newitem +"</li>"+
-                        "<li class=\"lineitem\">" + numitem +"</li>"+
-                        "<li class=\"lineitem\">"  + totalprice +"</li>" + "</ul>");
+    $("#items").append( "<ul>"+
+                        "<li class=\"lineitemfront\">" + newitem +"</li>"+
+                        "<li class=\"lineitemquantity\">" + numitem +"</li>"+
+                        "<li class=\"lineitemtotal\">"  + totalprice +"</li></ul>");
     ordertotal = parseFloat(totalprice) + ordertotal;
     $("#price_input").val(ordertotal);
 

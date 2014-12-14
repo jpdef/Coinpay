@@ -19,4 +19,5 @@ db.define_table('products',
     Field('value','double'))
 
 db.define_table('rates',
-    Field('value','double'))
+    Field('value','double'),
+    Field('time','datetime'))

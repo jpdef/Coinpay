@@ -47,25 +47,27 @@
 </ul>
 
 <div id="linelist" class="container">
-    <ul>
-     <li class="lineitem">Product Name</li>
-     <li class="lineitem">Quantity</li>
-     <li class="lineitem">Total</li>
-    </ul>
-<ul>
+<div >
+<span><input class="inputs"  name= "newitem" id="newitem"  type="text" class="input-box" />
+<input  class="inputs" name= "numitem" id="numitem" type="text" class="input-box" value="0.0"/>
+<output name= "itemprice" id="itemprice" type="text" class="text"/> 0.0 </output>
+<output name= "totalprice" id="totalprice" type="number"/> 0.0 </output></span>
 
-<li class="lineitem"><input  name= "newitem" id="newitem"  type="text" class="input-box" /></li>
-<li class="lineitem"><input  name= "numitem" id="numitem" type="text" class="input-box"/></li>
-<li class="lineitem"><output name= "itemprice" id="itemprice" type="text" class="text"/> 0.0 </output></li>
-<li class="lineitem"><output name= "totalprice" id="totalprice" type="number"/> 0.0 </output></li>
-<li class="lineitem"><button id="additem" >+</button> </li>
-</ul>
+<button id="additem" style="position:relative; left:50px;" >+</button> 
 
-<ul id="productlist" >
+<ul id="productlist"  >
      {{for product in products:}}
      <li id="product">{{=product.name}} </li> 
      {{pass}}
 </ul>
+</div>
+
+    <div id="items"><ul >
+     <li class="lineitemfront" >Product Name</li>
+     <li class="lineitem" >Quantity</li>
+     <li class="lineitemtotal" >Total</li>
+    </ul></div>
+
 
 </div>
 
@@ -86,6 +88,7 @@
 <script>
 $( document ).ready(function() {
   $("#qrcode").hide();
+  $("#productlist").hide();
   $("#btn_qr_hide").hide();
 
    $("#btn_trns").click(function(){
@@ -147,7 +150,7 @@ $( document ).ready(function() {
 
 <script>
 window.setInterval(get_data,5000);
-
+var past =0;
 function get_data(){    
    jQuery.ajax({
      method:'post',
@@ -157,14 +160,19 @@ function get_data(){
       //get conversion rate
       $.get("https://bitpay.com/api/rates",function(response){
          var average_conv = response[0].rate;  
-         jQuery.ajax({
-              method:'post',
-              url: '{{=URL('add_conv')}}',
-              data:{'conv':average_conv},
-              success: function(data){
-                console.log("add_conv:return= " + data);
-              }
-          });
+         var now = new Date()
+         now = now.getTime();
+         if(now > past+30000){
+           jQuery.ajax({
+                method:'post',
+                url: '{{=URL('add_conv')}}',
+                data:{'conv':average_conv},
+                success: function(data){
+                  console.log("add_conv:return= " + data);
+                }
+            });
+          }
+          past = now;
           console.log("getdata:"+average_conv);
           console.log("getdata:"+address);
          
