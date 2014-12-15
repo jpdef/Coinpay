@@ -44,6 +44,7 @@ def get_price():
         return row.value
 
 def exchange_stats():
+  try:  
     from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
     from matplotlib.figure import Figure
     from cStringIO import StringIO
@@ -64,16 +65,19 @@ def exchange_stats():
     if xlab: ax.set_xlabel(xlab)
     if ylab: ax.set_ylabel(ylab)
     image=ax.plot_date(data_t,data_v)
-    #image.set_interpolation('bilinear')
     canvas=FigureCanvas(fig)
     stream=StringIO()
     canvas.print_png(stream)
     return stream.getvalue()
+  except ImportError:
+    return dict(mess="Couldn't Plot server requires matplotlib")
 
 def rate_stats():
+  try:
     from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
     from matplotlib.figure import Figure
     from cStringIO import StringIO
+   
     response.headers['Content-Type']='image/png'
     title='USD Bitcoin Conversion'
     xlab='Time'
@@ -96,5 +100,7 @@ def rate_stats():
     stream=StringIO()
     canvas.print_png(stream)
     return stream.getvalue()
+  except ImportError:
+    return dict(mess="Couldn't Plot server requires matplotlib")
 
-
+    
