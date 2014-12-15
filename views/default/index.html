@@ -67,6 +67,8 @@
      <li class="lineitem" >Quantity</li>
      <li class="lineitemtotal" >Total</li>
     </ul></div>
+     <div> <button id="clear" class="btn" type ="submit">CLEAR</button></div>
+
 
 
 </div>
@@ -90,6 +92,10 @@ $( document ).ready(function() {
   $("#qrcode").hide();
   $("#productlist").hide();
   $("#btn_qr_hide").hide();
+  
+   $("#clear").click(function(){
+       $(".item").empty();
+   });
 
    $("#btn_trns").click(function(){
       var required_value = parseFloat($("#price_input").val());
