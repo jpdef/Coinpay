@@ -27,10 +27,10 @@
 <!-- PRICE INPUT-->
 <h1 id="price_header"> Total Price:</h1>
 
-<div>
+<span>
   <input id="price_input"></input> 
   <button id="btn_qr_hide" class="btn" type ="submit">Hide QR</button>
-</div>
+</span>
 
 <div class="container">
     <ul id="list">
@@ -95,7 +95,7 @@ $( document ).ready(function() {
   
    $("#clear").click(function(){
        $(".item").empty();
-       $("#price_input").empty();
+       $("#price_input").val(0.0);
    });
 
    $("#btn_trns").click(function(){
