@@ -7,7 +7,7 @@ $(document).ready(function() {
     var numitem = $("#numitem").val();
     var totalprice = $("#totalprice").val();
 
-    $("#items").append( "<ul>"+
+    $("#items").append( "<ul class=\"item\">"+
                         "<li class=\"lineitemfront\">" + newitem +"</li>"+
                         "<li class=\"lineitemquantity\">" + numitem +"</li>"+
                         "<li class=\"lineitemtotal\">"  + totalprice +"</li></ul>");
